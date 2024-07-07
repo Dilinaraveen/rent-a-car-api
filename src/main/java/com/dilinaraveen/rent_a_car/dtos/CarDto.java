@@ -1,10 +1,8 @@
 package com.dilinaraveen.rent_a_car.dtos;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
 
 @Data
 public class CarDto {
