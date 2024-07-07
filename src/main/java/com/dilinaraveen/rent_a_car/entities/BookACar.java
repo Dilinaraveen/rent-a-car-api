@@ -1,5 +1,6 @@
 package com.dilinaraveen.rent_a_car.entities;
 
+import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
 import com.dilinaraveen.rent_a_car.enums.BookCarStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -38,4 +39,19 @@ public class BookACar {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Car car;
+
+    public BookACarDto getBookACarDto(){
+        BookACarDto bookACarDto = new BookACarDto();
+        bookACarDto.setId(id);
+        bookACarDto.setDays(days);
+        bookACarDto.setBookCarStatus(bookCarStatus);
+        bookACarDto.setPrice(price);
+        bookACarDto.setToDate(toDate);
+        bookACarDto.setFromDate(fromDate);
+        bookACarDto.setEmail(user.getEmail());
+        bookACarDto.setUsername(user.getUsername());
+        bookACarDto.setUserId(user.getId());
+        bookACarDto.setCarId(car.getId());
+        return bookACarDto;
+    }
 }

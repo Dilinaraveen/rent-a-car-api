@@ -2,6 +2,7 @@ package com.dilinaraveen.rent_a_car.controllers;
 
 import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
 import com.dilinaraveen.rent_a_car.dtos.CarDto;
+import com.dilinaraveen.rent_a_car.dtos.SearchCarDto;
 import com.dilinaraveen.rent_a_car.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,15 @@ public class CustomerController {
         CarDto carDto = customerService.getCarById(carId);
         if (carDto==null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(carDto);
+    }
+
+    @GetMapping("/car/bookings/{userId}")
+    public ResponseEntity<List<BookACarDto>> getBookingsByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(customerService.getBookingsByUserId(userId));
+    }
+
+    @PostMapping("/car/search")
+    public ResponseEntity<?> searchCar(@RequestBody SearchCarDto searchCarDto){
+        return ResponseEntity.ok(customerService.searchCar(searchCarDto));
     }
 }
