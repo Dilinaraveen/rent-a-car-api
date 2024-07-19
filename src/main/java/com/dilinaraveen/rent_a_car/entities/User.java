@@ -20,32 +20,35 @@ public class User implements UserDetails {
     private Long id;
     private String name;
     private String email;
-    private String password;
+    private String password; // This field is mapped to the password column in your database
     private UserRole userRole;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(userRole.name()));
     }
-
     @Override
     public String getUsername() {
-        return email;
+        return email; // Return the email field as the username
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return true; // Customize this logic as needed
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return true; // Customize this logic as needed
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Customize this logic as needed
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return true; // Customize this logic as needed
     }
-
 }
