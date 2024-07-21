@@ -9,6 +9,7 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,20 +33,34 @@ public class AuthServiceImpl implements AuthService{
         }
     }
 
+    @Transactional
     @Override
     public UserDto createCustomer(SignupRequest signupRequest) {
-        User user = new User();
-        user.setEmail(signupRequest.getEmail());
-        user.setName(signupRequest.getName());
-        user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
-        user.setUserRole(UserRole.CUSTOMER);
-        User createdCustomer = userRepository.save(user);
-        UserDto createdUserDto = new UserDto();
-        createdUserDto.setId(createdCustomer.getId());
-        createdUserDto.setEmail(createdCustomer.getEmail());
-        createdUserDto.setUserRole(createdCustomer.getUserRole());
-        return createdUserDto;
+        try {
+            User user = new User();
+            user.setEmail(signupRequest.getEmail());
+            user.setName(signupRequest.getName());
+            user.setPassword(new BCryptPasswordEncoder().encode(signupRequest.getPassword()));
+            user.setUserRole(UserRole.CUSTOMER);
+
+
+            User createdCustomer = userRepository.save(user);
+            userRepository.flush();
+
+
+            UserDto createdUserDto = new UserDto();
+            createdUserDto.setId(createdCustomer.getId());
+            createdUserDto.setEmail(createdCustomer.getEmail());
+            createdUserDto.setUserRole(createdCustomer.getUserRole());
+
+            return createdUserDto;
+        } catch (Exception e) {
+            System.err.println("Error creating user: " + e.getMessage());
+            e.printStackTrace();
+            throw e; // or handle the exception as needed
+        }
     }
+
 
     @Override
     public boolean hasCustomerWithEmail(String email){

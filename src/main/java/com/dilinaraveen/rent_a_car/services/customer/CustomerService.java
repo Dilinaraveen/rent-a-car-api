@@ -19,4 +19,6 @@ public interface CustomerService {
 
     CarDtoListDto searchCar(SearchCarDto searchCarDto);
 
+    public List<String> getUniqueBrands();
+
 }

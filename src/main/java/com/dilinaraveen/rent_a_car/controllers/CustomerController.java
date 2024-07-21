@@ -47,4 +47,10 @@ public class CustomerController {
     public ResponseEntity<?> searchCar(@RequestBody SearchCarDto searchCarDto){
         return ResponseEntity.ok(customerService.searchCar(searchCarDto));
     }
+
+    @GetMapping("/car/brands")
+    public ResponseEntity<List<String>> getUniqueBrands() {
+        List<String> uniqueBrands = customerService.getUniqueBrands();
+        return ResponseEntity.ok(uniqueBrands);
+    }
 }

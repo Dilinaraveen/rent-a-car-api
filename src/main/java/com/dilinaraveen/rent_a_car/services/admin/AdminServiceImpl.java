@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,23 +38,18 @@ public class AdminServiceImpl implements AdminService{
             car.setBrand(carDto.getBrand());
             car.setColor(carDto.getColor());
             car.setPrice(carDto.getPrice());
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date year;
-            try {
-                year = sdf.parse(carDto.getYear());
-                System.out.println("Parsed Date: " + year);
-            } catch (ParseException e) {
-                System.err.println("Failed to parse date: " + e.getMessage());
-                return false;
-            }
-            car.setYear(String.valueOf(year));
+            car.setYear(carDto.getYear());
             car.setType(carDto.getType());
             car.setDescription(carDto.getDescription());
             car.setTransmission(carDto.getTransmission());
             car.setImage(carDto.getImage().getBytes());
+            car.setCarAvg(carDto.getCarAvg());
+            car.setSeats(carDto.getSeats());
 
             carRepository.save(car);
+
+            // Convert image bytes to Base64 string for returnedImage
+            carDto.setReturnedImage(Base64.getEncoder().encodeToString(car.getImage()));
 
             return true;
         } catch (Exception e){
@@ -99,6 +91,8 @@ public class AdminServiceImpl implements AdminService{
             existingCar.setColor(carDto.getColor());
             existingCar.setName(carDto.getName());
             existingCar.setBrand(carDto.getBrand());
+            existingCar.setCarAvg(carDto.getCarAvg());
+            existingCar.setSeats(carDto.getSeats());
             carRepository.save(existingCar);
             return true;
         }else {

@@ -93,4 +93,12 @@ public class CustomerServiceImpl implements CustomerService{
 
     }
 
+    @Override
+    public List<String> getUniqueBrands() {
+        return carRepository.findAll().stream()
+                .map(Car::getBrand)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
 }

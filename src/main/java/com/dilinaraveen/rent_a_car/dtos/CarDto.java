@@ -24,8 +24,12 @@ public class CarDto {
 
     private String year;
 
+    private Long carAvg;
+
+    private String seats;
+
     private MultipartFile image;
 
-    private byte[] returnedImage;
+    private String returnedImage;
 
 }
