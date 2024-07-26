@@ -16,6 +16,8 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -47,12 +49,22 @@ public class CustomerServiceImpl implements CustomerService{
             bookACar.setCar(optionalCar.get());
             bookACar.setBookCarStatus(BookCarStatus.PENDING);
 
-            long diffInMilliSeconds = bookACarDto.getToDate().getTime()-bookACarDto.getFromDate().getTime();
+            LocalDate fromDate = bookACarDto.getFromDate();
+            LocalDate toDate = bookACarDto.getToDate();
 
-            long days = TimeUnit.MICROSECONDS.toDays(diffInMilliSeconds);
+            bookACar.setFromDate(fromDate);
+            bookACar.setToDate(toDate);
+
+            long days = ChronoUnit.DAYS.between(fromDate, toDate);
+            bookACar.setDays(days);
+            bookACar.setPrice(existingCar.getPrice() * days);
 
             bookACar.setDays(days);
             bookACar.setPrice(existingCar.getPrice() * days);
+            bookACar.setPickupLocation(bookACarDto.getPickupLocation());
+            bookACar.setPickupTime(bookACarDto.getPickupTime());
+            bookACar.setDropTime(bookACarDto.getDropTime());
+            bookACar.setContactNumber(bookACarDto.getContactNumber());
 
             bookACarRepository.save(bookACar);
 

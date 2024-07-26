@@ -1,10 +1,11 @@
 package com.dilinaraveen.rent_a_car.dtos;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
-
 @Data
+@Validated
 public class CarDto {
     private Long id;
 

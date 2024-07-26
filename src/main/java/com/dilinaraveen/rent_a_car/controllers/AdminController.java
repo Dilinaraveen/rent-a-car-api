@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+
 
     @PostMapping("/car")
     public ResponseEntity<?> postCar(@ModelAttribute CarDto carDto) throws IOException {
@@ -51,8 +53,36 @@ public class AdminController {
     }
 
     @PutMapping("/car/{carId}")
-    public ResponseEntity<Void> updateCar(@PathVariable Long carId, @ModelAttribute CarDto carDto) throws IOException {
+    public ResponseEntity<Void> updateCar(
+            @PathVariable Long carId,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String transmission,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) Long price,
+            @RequestParam(required = false) String year,
+            @RequestParam(required = false) Long carAvg,
+            @RequestParam(required = false) String seats,
+            @RequestParam(required = false) MultipartFile image
+    ) throws IOException {
+        CarDto carDto = new CarDto();
+        carDto.setId(carId);
+        carDto.setBrand(brand);
+        carDto.setColor(color);
+        carDto.setName(name);
+        carDto.setType(type);
+        carDto.setTransmission(transmission);
+        carDto.setDescription(description);
+        carDto.setPrice(price);
+        carDto.setYear(year);
+        carDto.setCarAvg(carAvg);
+        carDto.setSeats(seats);
+        carDto.setImage(image);
+
         try {
+            System.out.println("CarDto "+carDto);
             boolean success = adminService.updateCar(carId, carDto);
             if (success)return ResponseEntity.status(HttpStatus.OK).build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

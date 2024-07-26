@@ -26,6 +26,7 @@ public class CustomerController {
 
     @PostMapping("/cars/book")
     public ResponseEntity<Void> bookACar(@RequestBody BookACarDto bookACarDto) {
+        System.out.println("Received DTO: " + bookACarDto);
         boolean success = customerService.bookACar(bookACarDto);
         if (success) return ResponseEntity.status(HttpStatus.CREATED).build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
