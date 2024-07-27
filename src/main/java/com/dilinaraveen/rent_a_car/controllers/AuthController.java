@@ -55,14 +55,18 @@ public class AuthController {
             DisabledException,
             UsernameNotFoundException {
 
+        System.out.println("authRequest"+authenticationRequest);
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),authenticationRequest.getPassword()));
         } catch (BadCredentialsException e){
             throw new BadCredentialsException("Incorrect username or password");
         }
         final UserDetails userDetails = userService.userDetailsService().loadUserByUsername(authenticationRequest.getEmail());
+        System.out.println("userDetails "+userDetails);
         Optional<User> optionalUser = userRepository.findFirstByEmail(userDetails.getUsername());
+        System.out.println("optionalUser "+optionalUser);
         final String jwt = jwtUtil.generateToken(userDetails);
+        System.out.println("jwt "+jwt);
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
         if (optionalUser.isPresent()) {
             authenticationResponse.setJwt(jwt);

@@ -110,10 +110,12 @@ public class AdminServiceImpl implements AdminService{
         Optional<BookACar> optionalBookACar = bookACarRepository.findById(bookingId);
         if (optionalBookACar.isPresent()){
             BookACar existingBookACar = optionalBookACar.get();
-            if (Objects.equals(status,"Approve"))
+            if (Objects.equals(status,"APPROVED"))
                 existingBookACar.setBookCarStatus(BookCarStatus.APPROVED);
-            else
+            else if(Objects.equals(status,"REJECTED"))
                 existingBookACar.setBookCarStatus(BookCarStatus.REJECTED);
+            else
+                existingBookACar.setBookCarStatus(BookCarStatus.PENDING);
             bookACarRepository.save(existingBookACar);
             return true;
         }
