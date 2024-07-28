@@ -19,4 +19,8 @@ public interface AdminService {
     boolean changeBookingStatus(Long bookingId, String status);
 
     CarDtoListDto searchCar(SearchCarDto searchCarDto);
+
+    boolean editBooking(Long bookingId, BookACarDto bookACarDto, String jwt);
+
+    boolean deleteBooking(Long bookingId);
 }

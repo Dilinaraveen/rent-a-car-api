@@ -108,4 +108,30 @@ public class AdminController {
         return ResponseEntity.ok(adminService.searchCar(searchCarDto));
     }
 
+    @PutMapping("/car/booking/{bookingId}")
+    public ResponseEntity<?> editBooking(
+            @PathVariable Long bookingId,
+            @RequestBody BookACarDto bookACarDto,
+            @RequestHeader("Authorization") String jwt) {
+        try {
+            boolean success = adminService.editBooking(bookingId, bookACarDto, jwt);
+            if (success) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/car/booking/{bookingId}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long bookingId) {
+        boolean success = adminService.deleteBooking(bookingId);
+        if (success) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
 }
