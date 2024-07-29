@@ -54,4 +54,30 @@ public class CustomerController {
         List<String> uniqueBrands = customerService.getUniqueBrands();
         return ResponseEntity.ok(uniqueBrands);
     }
+
+    @PutMapping("/car/booking/{bookingId}")
+    public ResponseEntity<?> editBooking(
+            @PathVariable Long bookingId,
+            @RequestBody BookACarDto bookACarDto,
+            @RequestHeader("Authorization") String jwt) {
+        try {
+            boolean success = customerService.editBooking(bookingId, bookACarDto, jwt);
+            if (success) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/car/booking/{bookingId}")
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long bookingId) {
+        boolean success = customerService.deleteBooking(bookingId);
+        if (success) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }

@@ -21,4 +21,8 @@ public interface CustomerService {
 
     public List<String> getUniqueBrands();
 
+    boolean editBooking(Long bookingId, BookACarDto bookACarDto, String jwt);
+
+    boolean deleteBooking(Long bookingId);
+
 }

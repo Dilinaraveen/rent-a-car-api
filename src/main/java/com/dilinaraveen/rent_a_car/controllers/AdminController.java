@@ -1,8 +1,6 @@
 package com.dilinaraveen.rent_a_car.controllers;
 
-import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
-import com.dilinaraveen.rent_a_car.dtos.CarDto;
-import com.dilinaraveen.rent_a_car.dtos.SearchCarDto;
+import com.dilinaraveen.rent_a_car.dtos.*;
 import com.dilinaraveen.rent_a_car.services.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -132,6 +130,12 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDetailsDto>> getAllUsers() {
+        List<UserDetailsDto> users = adminService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
 }

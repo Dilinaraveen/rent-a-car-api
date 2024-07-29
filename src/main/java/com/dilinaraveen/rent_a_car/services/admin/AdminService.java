@@ -1,9 +1,6 @@
 package com.dilinaraveen.rent_a_car.services.admin;
 
-import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
-import com.dilinaraveen.rent_a_car.dtos.CarDto;
-import com.dilinaraveen.rent_a_car.dtos.CarDtoListDto;
-import com.dilinaraveen.rent_a_car.dtos.SearchCarDto;
+import com.dilinaraveen.rent_a_car.dtos.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,4 +20,6 @@ public interface AdminService {
     boolean editBooking(Long bookingId, BookACarDto bookACarDto, String jwt);
 
     boolean deleteBooking(Long bookingId);
+
+    List<UserDetailsDto> getAllUsers();
 }

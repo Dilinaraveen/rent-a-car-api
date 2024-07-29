@@ -1,14 +1,13 @@
 package com.dilinaraveen.rent_a_car.services.admin;
 
-import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
-import com.dilinaraveen.rent_a_car.dtos.CarDto;
-import com.dilinaraveen.rent_a_car.dtos.CarDtoListDto;
-import com.dilinaraveen.rent_a_car.dtos.SearchCarDto;
+import com.dilinaraveen.rent_a_car.dtos.*;
 import com.dilinaraveen.rent_a_car.entities.BookACar;
 import com.dilinaraveen.rent_a_car.entities.Car;
+import com.dilinaraveen.rent_a_car.entities.User;
 import com.dilinaraveen.rent_a_car.enums.BookCarStatus;
 import com.dilinaraveen.rent_a_car.repositories.BookACarRepository;
 import com.dilinaraveen.rent_a_car.repositories.CarRepository;
+import com.dilinaraveen.rent_a_car.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -29,6 +28,8 @@ public class AdminServiceImpl implements AdminService{
     private final CarRepository carRepository;
 
     private final BookACarRepository bookACarRepository;
+
+    private final UserRepository userRepository;
 
     @Override
     public boolean postCar(CarDto carDto) throws IOException {
@@ -180,5 +181,20 @@ public class AdminServiceImpl implements AdminService{
             return true;
         }
         return false;
+    }
+
+    public List<UserDetailsDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::mapToUserDetailsDto)
+                .collect(Collectors.toList());
+    }
+
+    private UserDetailsDto mapToUserDetailsDto(User user) {
+        UserDetailsDto userDetailsDto = new UserDetailsDto();
+        userDetailsDto.setId(user.getId());
+        userDetailsDto.setName(user.getName());
+        userDetailsDto.setEmail(user.getEmail());
+        userDetailsDto.setUserRole(user.getUserRole());
+        return userDetailsDto;
     }
 }

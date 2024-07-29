@@ -113,4 +113,42 @@ public class CustomerServiceImpl implements CustomerService{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public boolean editBooking(Long bookingId, BookACarDto bookACarDto, String jwt) {
+        Optional<BookACar> optionalBooking = bookACarRepository.findById(bookingId);
+        Optional<Car> optionalCar = carRepository.findById(bookACarDto.getCarId());
+
+        if (optionalCar.isPresent() && optionalBooking.isPresent()) {
+            Car existingCar = optionalCar.get();
+            System.out.println("existingCar"+existingCar);
+            BookACar booking = optionalBooking.get();
+
+            booking.setFromDate(bookACarDto.getFromDate());
+            booking.setToDate(bookACarDto.getToDate());
+            booking.setPickupLocation(bookACarDto.getPickupLocation());
+            booking.setPickupTime(bookACarDto.getPickupTime());
+            booking.setDropTime(bookACarDto.getDropTime());
+            booking.setContactNumber(bookACarDto.getContactNumber());
+
+            LocalDate fromDate = bookACarDto.getFromDate();
+            LocalDate toDate = bookACarDto.getToDate();
+            long days = ChronoUnit.DAYS.between(fromDate, toDate);
+            booking.setDays(days);
+            booking.setPrice(existingCar.getPrice() * days);
+
+            bookACarRepository.save(booking);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteBooking(Long bookingId) {
+        if (bookACarRepository.existsById(bookingId)) {
+            bookACarRepository.deleteById(bookingId);
+            return true;
+        }
+        return false;
+    }
+
 }
