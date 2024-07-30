@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
@@ -18,10 +20,10 @@ public class AuthServiceImpl implements AuthService{
     private final UserRepository userRepository;
 
     @PostConstruct
-    public void createAdminAccount(){
-        User adminAccount = userRepository.findByUserRole(UserRole.ADMIN);
+    public void createAdminAccount() {
+        Optional<User> adminAccount = userRepository.findFirstByUserRole(UserRole.ADMIN);
 
-        if( adminAccount == null ){
+        if (adminAccount.isEmpty()) {
             User newAdminAccount = new User();
             newAdminAccount.setName("Admin");
             newAdminAccount.setEmail("admin@test.com");

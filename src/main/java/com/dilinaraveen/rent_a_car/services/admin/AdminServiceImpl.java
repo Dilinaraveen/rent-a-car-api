@@ -5,6 +5,7 @@ import com.dilinaraveen.rent_a_car.entities.BookACar;
 import com.dilinaraveen.rent_a_car.entities.Car;
 import com.dilinaraveen.rent_a_car.entities.User;
 import com.dilinaraveen.rent_a_car.enums.BookCarStatus;
+import com.dilinaraveen.rent_a_car.enums.UserRole;
 import com.dilinaraveen.rent_a_car.repositories.BookACarRepository;
 import com.dilinaraveen.rent_a_car.repositories.CarRepository;
 import com.dilinaraveen.rent_a_car.repositories.UserRepository;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -183,10 +185,23 @@ public class AdminServiceImpl implements AdminService{
         return false;
     }
 
+    @Override
     public List<UserDetailsDto> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::mapToUserDetailsDto)
                 .collect(Collectors.toList());
+    }
+
+    public boolean changeUserRole(Long userId, UserRole role) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setUserRole(role);
+            userRepository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private UserDetailsDto mapToUserDetailsDto(User user) {

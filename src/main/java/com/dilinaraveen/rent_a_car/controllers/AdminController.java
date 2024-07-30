@@ -138,4 +138,18 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
+    @PutMapping("/users/{userId}/role")
+    public ResponseEntity<?> changeUserRole(@PathVariable Long userId, @RequestBody RoleChangeDto roleChangeDto) {
+        try {
+            boolean success = adminService.changeUserRole(userId, roleChangeDto.getRole());
+            if (success) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
 }

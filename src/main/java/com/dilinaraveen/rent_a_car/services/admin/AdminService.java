@@ -1,6 +1,7 @@
 package com.dilinaraveen.rent_a_car.services.admin;
 
 import com.dilinaraveen.rent_a_car.dtos.*;
+import com.dilinaraveen.rent_a_car.enums.UserRole;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,4 +23,6 @@ public interface AdminService {
     boolean deleteBooking(Long bookingId);
 
     List<UserDetailsDto> getAllUsers();
+
+    public boolean changeUserRole(Long userId, UserRole role);
 }
