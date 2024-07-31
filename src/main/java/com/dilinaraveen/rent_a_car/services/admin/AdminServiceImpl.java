@@ -204,6 +204,10 @@ public class AdminServiceImpl implements AdminService{
         }
     }
 
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+    }
+
     private UserDetailsDto mapToUserDetailsDto(User user) {
         UserDetailsDto userDetailsDto = new UserDetailsDto();
         userDetailsDto.setId(user.getId());

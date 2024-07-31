@@ -25,4 +25,6 @@ public interface AdminService {
     List<UserDetailsDto> getAllUsers();
 
     public boolean changeUserRole(Long userId, UserRole role);
+
+    public void deleteUser(Long userId);
 }

@@ -152,4 +152,10 @@ public class AdminController {
         }
     }
 
+    @DeleteMapping("/users/{userId}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
+        adminService.deleteUser(userId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
