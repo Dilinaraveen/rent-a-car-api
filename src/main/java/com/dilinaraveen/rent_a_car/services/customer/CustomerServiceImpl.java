@@ -11,9 +11,11 @@ import com.dilinaraveen.rent_a_car.enums.BookCarStatus;
 import com.dilinaraveen.rent_a_car.repositories.BookACarRepository;
 import com.dilinaraveen.rent_a_car.repositories.CarRepository;
 import com.dilinaraveen.rent_a_car.repositories.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -149,6 +151,22 @@ public class CustomerServiceImpl implements CustomerService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User updateUserProfile(Long userId, User updatedUser) {
+        Optional<User> existingUserOptional = userRepository.findById(userId);
+        if (existingUserOptional.isPresent()) {
+            User existingUser = existingUserOptional.get();
+            existingUser.setName(updatedUser.getName());
+            existingUser.setEmail(updatedUser.getEmail());
+            if (updatedUser.getPassword() != null) {
+                existingUser.setPassword(new BCryptPasswordEncoder().encode(updatedUser.getPassword()));
+            }
+            return userRepository.save(existingUser);
+        } else {
+            throw new EntityNotFoundException("User not found");
+        }
     }
 
 }

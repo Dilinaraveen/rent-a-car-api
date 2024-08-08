@@ -3,6 +3,7 @@ package com.dilinaraveen.rent_a_car.controllers;
 import com.dilinaraveen.rent_a_car.dtos.BookACarDto;
 import com.dilinaraveen.rent_a_car.dtos.CarDto;
 import com.dilinaraveen.rent_a_car.dtos.SearchCarDto;
+import com.dilinaraveen.rent_a_car.entities.User;
 import com.dilinaraveen.rent_a_car.services.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -79,5 +80,14 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUserProfile(
+            @PathVariable Long userId,
+            @RequestBody User updatedUser
+    ) {
+        User user = customerService.updateUserProfile(userId, updatedUser);
+        return ResponseEntity.ok(user);
     }
 }
